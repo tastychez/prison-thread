@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>David M. — The Prison Thread Initiative</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            body: ['Space Grotesk', 'sans-serif'],
+          },
+          colors: {
+            sunset: {
+              50:  '#FFF8F0',
+              100: '#FFEED9',
+              200: '#FFDAAD',
+              300: '#FFC078',
+              400: '#FFA043',
+              500: '#FF7A1A',
+              600: '#E85D00',
+              700: '#C04800',
+              800: '#8A3400',
+              900: '#4A1D00',
+            },
+            cream:   '#FDF6EC',
+            warmgray: '#3D3531',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    * { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: #FDF6EC;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .font-display { font-family: 'Syne', sans-serif; }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 200px 200px;
+    }
+
+    .blob-wrap {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.25;
+      pointer-events: none;
+      animation: float 8s ease-in-out infinite alternate;
+    }
+
+    @media (min-width: 768px) {
+      .blob { opacity: 0.35; }
+    }
+
+    @keyframes float {
+      0%   { transform: translateY(0px) scale(1); }
+      100% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    @keyframes fade-up {
+      0%   { opacity: 0; transform: translateY(24px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-up {
+      animation: fade-up 0.7s ease-out both;
+    }
+
+    .stagger-1 { animation-delay: 0.1s; }
+    .stagger-2 { animation-delay: 0.2s; }
+    .stagger-3 { animation-delay: 0.35s; }
+    .stagger-4 { animation-delay: 0.5s; }
+    .stagger-5 { animation-delay: 0.65s; }
+
+    .gallery-card {
+      transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s ease;
+    }
+    @media (hover: hover) {
+      .gallery-card:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: 0 20px 40px -12px rgba(255, 122, 26, 0.25);
+      }
+    }
+    .gallery-card:active {
+      transform: scale(0.97);
+    }
+
+    .cta-btn {
+      background: linear-gradient(135deg, #FF7A1A 0%, #E85D00 50%, #FFA043 100%);
+      background-size: 200% 200%;
+      animation: shimmer 3s ease-in-out infinite;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    @media (hover: hover) {
+      .cta-btn:hover {
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 12px 32px -6px rgba(255, 122, 26, 0.5);
+      }
+    }
+    .cta-btn:active {
+      transform: scale(0.97);
+    }
+
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+
+    .tag {
+      background: linear-gradient(135deg, #FFA043, #FF7A1A);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-warmgray overflow-x-hidden relative">
+
+  <div class="grain"></div>
+
+  <div class="blob-wrap">
+    <div class="blob w-48 h-48 md:w-72 md:h-72 bg-sunset-300 top-[-40px] left-[-30px] md:top-[-80px] md:left-[-60px]"></div>
+    <div class="blob w-56 h-56 md:w-96 md:h-96 bg-sunset-400 top-[300px] right-[-60px] md:right-[-120px]" style="animation-delay: 2s;"></div>
+    <div class="blob w-40 h-40 md:w-64 md:h-64 bg-yellow-300 bottom-[200px] left-[5%] md:left-[10%]" style="animation-delay: 4s;"></div>
+  </div>
+
+  <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-5 py-8 md:py-16">
+
+    <!-- ════════════════ HEADER ════════════════ -->
+    <header class="text-center mb-8 md:mb-20 animate-fade-up">
+      <p class="inline-block text-[0.65rem] md:text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-sunset-600 bg-sunset-100 px-3.5 py-1.5 rounded-full mb-4 md:mb-5">
+        Story Tag Verified&ensp;&#10003;
+      </p>
+      <h1 class="font-display text-[2.6rem] sm:text-5xl md:text-7xl font-800 leading-[1.05] tracking-tight">
+        David <span class="tag">M.</span>
+      </h1>
+      <p class="mt-2 md:mt-3 text-[0.8rem] sm:text-sm md:text-base text-warmgray/60 font-medium tracking-wide leading-snug">
+        Upcycling Artist&ensp;@&ensp;<span class="text-sunset-600 font-semibold">The Prison Thread Initiative</span>
+      </p>
+    </header>
+
+    <!-- ════════════════ PROFILE ════════════════ -->
+    <section class="flex flex-col md:flex-row gap-5 md:gap-12 items-center md:items-start mb-12 md:mb-28">
+
+      <!-- Portrait -->
+      <div class="animate-fade-up stagger-1 w-[75%] sm:w-[65%] md:w-[45%] flex-shrink-0">
+        <div class="relative group">
+          <div class="absolute -inset-2 bg-gradient-to-br from-sunset-400 via-sunset-300 to-yellow-300 rounded-2xl opacity-60 blur-lg group-hover:opacity-80 transition-opacity duration-500"></div>
+          <div class="relative overflow-hidden rounded-2xl shadow-xl">
+            <svg class="w-full" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="portrait-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FFA043" />
+                  <stop offset="100%" stop-color="#E85D00" />
+                </linearGradient>
+                <linearGradient id="shirt" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#3D3531" />
+                  <stop offset="100%" stop-color="#5A4D46" />
+                </linearGradient>
+              </defs>
+              <rect width="400" height="500" fill="url(#portrait-bg)" />
+              <!-- Abstract creative portrait -->
+              <circle cx="200" cy="180" r="80" fill="#FDF6EC" opacity="0.9" />
+              <circle cx="200" cy="180" r="72" fill="url(#portrait-bg)" opacity="0.3" />
+              <ellipse cx="200" cy="175" rx="55" ry="62" fill="#8B6914" opacity="0.8" />
+              <ellipse cx="200" cy="195" rx="40" ry="48" fill="#D4A26A" />
+              <!-- Eyes -->
+              <ellipse cx="183" cy="185" rx="7" ry="5" fill="#3D3531" />
+              <ellipse cx="217" cy="185" rx="7" ry="5" fill="#3D3531" />
+              <circle cx="185" cy="184" r="2" fill="#FDF6EC" />
+              <circle cx="219" cy="184" r="2" fill="#FDF6EC" />
+              <!-- Smile -->
+              <path d="M188 207 Q200 218 212 207" stroke="#3D3531" stroke-width="2.5" fill="none" stroke-linecap="round" />
+              <!-- Body / shirt -->
+              <path d="M120 340 Q120 280 200 270 Q280 280 280 340 L300 500 L100 500 Z" fill="url(#shirt)" />
+              <!-- Thread / sewing detail on shirt -->
+              <path d="M155 310 L175 320 L160 340 L180 350 L165 370" stroke="#FFA043" stroke-width="2" fill="none" stroke-dasharray="4 3" stroke-linecap="round" />
+              <path d="M230 300 L245 315 L228 330 L248 345" stroke="#FF7A1A" stroke-width="2" fill="none" stroke-dasharray="4 3" stroke-linecap="round" />
+              <!-- Needle & thread accent -->
+              <line x1="250" y1="340" x2="260" y2="355" stroke="#FFC078" stroke-width="1.5" />
+              <circle cx="262" cy="358" r="3" fill="none" stroke="#FFC078" stroke-width="1.5" />
+              <!-- Decorative stitches at bottom -->
+              <text x="200" y="480" text-anchor="middle" fill="#FFA043" font-size="13" font-family="Space Grotesk" letter-spacing="6" opacity="0.6">DAVID M.</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- About Me -->
+      <div class="animate-fade-up stagger-2 w-full md:w-[55%]">
+        <div class="bg-white/60 backdrop-blur-md rounded-2xl p-5 sm:p-7 md:p-9 shadow-lg border border-sunset-100">
+          <div class="flex items-center gap-2.5 sm:gap-3 mb-3 sm:mb-5">
+            <span class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-sunset-400 to-sunset-600 flex items-center justify-center text-white text-sm sm:text-lg">&#9998;</span>
+            <h2 class="font-display text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">About Me</h2>
+          </div>
+          <p class="text-[0.9rem] sm:text-base md:text-lg leading-relaxed text-warmgray/80">
+            Hey everyone! My name is David and I'm from New York City!
+          </p>
+          <p class="text-[0.9rem] sm:text-base md:text-lg leading-relaxed text-warmgray/80 mt-3">
+            I've always been someone who takes things apart to see how they work, but for a long time, my life lacked focus. Learning industrial sewing gave me a quiet space to finally channel my energy. My style (heavy patchwork, raw edges, and utilitarian cuts) is inspired by the idea that even discarded, frayed things can be rebuilt into something strong and purposeful. I love taking mass-produced corporate waste and giving it a completely unique, human soul.
+          </p>
+          <div class="mt-4 sm:mt-7 flex flex-wrap gap-1.5 sm:gap-2">
+            <span class="text-[0.65rem] sm:text-xs font-semibold tracking-wider uppercase bg-sunset-100 text-sunset-700 px-2.5 py-1 rounded-full">Upcycling</span>
+            <span class="text-[0.65rem] sm:text-xs font-semibold tracking-wider uppercase bg-yellow-100 text-yellow-700 px-2.5 py-1 rounded-full">Denim Work</span>
+            <span class="text-[0.65rem] sm:text-xs font-semibold tracking-wider uppercase bg-orange-100 text-orange-700 px-2.5 py-1 rounded-full">Embroidery</span>
+            <span class="text-[0.65rem] sm:text-xs font-semibold tracking-wider uppercase bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full">Patchwork</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ GALLERY ════════════════ -->
+    <section class="mb-12 md:mb-28 animate-fade-up stagger-3">
+      <div class="text-center mb-6 md:mb-10">
+        <h2 class="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
+          Check out my <span class="tag">other works</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-warmgray/50 mt-1.5 sm:mt-2">Every piece is 1-of-1. Every stitch tells a story.</p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+
+        <!-- Card 1 -->
+        <div class="gallery-card rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-md border border-sunset-100/60">
+          <img src="images/reworked-denim.png" alt="Re-worked Denim Jacket" class="w-full aspect-[300/340] object-cover" />
+          <div class="px-2.5 py-2 sm:px-4 sm:py-3">
+            <p class="font-display font-semibold text-xs sm:text-sm">Re-worked Denim</p>
+            <p class="text-[0.65rem] sm:text-xs text-warmgray/50 mt-0.5">Patchwork jacket, 1 of 1</p>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="gallery-card rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-md border border-sunset-100/60">
+          <img src="images/cropped-utility-jacket.png" alt="Cropped Utility Jacket" class="w-full aspect-[300/340] object-cover" />
+          <div class="px-2.5 py-2 sm:px-4 sm:py-3">
+            <p class="font-display font-semibold text-xs sm:text-sm">Cropped Utility Jacket</p>
+            <p class="text-[0.65rem] sm:text-xs text-warmgray/50 mt-0.5">Military surplus remake</p>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="gallery-card rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-md border border-sunset-100/60">
+          <svg viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="340" fill="#FFEED9" />
+            <rect x="100" y="40" width="100" height="190" rx="6" fill="#D4A26A" opacity="0.6" />
+            <path d="M100 40 Q150 25 200 40" fill="#C04800" opacity="0.4" />
+            <circle cx="130" cy="90" r="10" fill="#FF7A1A" opacity="0.7" />
+            <circle cx="170" cy="110" r="8" fill="#E85D00" opacity="0.7" />
+            <circle cx="145" cy="150" r="12" fill="#FFA043" opacity="0.5" />
+            <path d="M115 170 Q150 200 185 170" stroke="#C04800" stroke-width="2" fill="none" />
+            <text x="150" y="280" text-anchor="middle" fill="#8A3400" font-size="14" font-family="Syne" font-weight="600">Embroidered Tee</text>
+            <text x="150" y="300" text-anchor="middle" fill="#8A3400" font-size="11" font-family="Space Grotesk" opacity="0.5">Floral detail</text>
+          </svg>
+          <div class="px-2.5 py-2 sm:px-4 sm:py-3">
+            <p class="font-display font-semibold text-xs sm:text-sm">Embroidered Tee</p>
+            <p class="text-[0.65rem] sm:text-xs text-warmgray/50 mt-0.5">Hand-stitched floral motif</p>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="gallery-card rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-md border border-sunset-100/60">
+          <svg viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="340" fill="#FFE0B2" />
+            <rect x="85" y="55" width="130" height="170" rx="10" fill="#4A1D00" opacity="0.75" />
+            <rect x="95" y="65" width="45" height="60" rx="3" fill="#FF7A1A" opacity="0.4" />
+            <rect x="150" y="65" width="55" height="40" rx="3" fill="#FFA043" opacity="0.35" />
+            <rect x="95" y="140" width="110" height="3" fill="#FFC078" opacity="0.7" />
+            <rect x="95" y="155" width="80" height="3" fill="#FFC078" opacity="0.5" />
+            <rect x="95" y="170" width="95" height="3" fill="#FFC078" opacity="0.4" />
+            <text x="150" y="280" text-anchor="middle" fill="#4A1D00" font-size="14" font-family="Syne" font-weight="600">Altered Cargos</text>
+            <text x="150" y="300" text-anchor="middle" fill="#4A1D00" font-size="11" font-family="Space Grotesk" opacity="0.5">Pants</text>
+          </svg>
+          <div class="px-2.5 py-2 sm:px-4 sm:py-3">
+            <p class="font-display font-semibold text-xs sm:text-sm">Altered Cargo Pants</p>
+            <p class="text-[0.65rem] sm:text-xs text-warmgray/50 mt-0.5">Tapered &amp; paneled, thrift base</p>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="gallery-card rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-md border border-sunset-100/60">
+          <svg viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="340" fill="#FFDAAD" />
+            <rect x="95" y="45" width="110" height="185" rx="8" fill="#F5F5DC" opacity="0.85" />
+            <path d="M120 80 L150 65 L180 80" stroke="#FF7A1A" stroke-width="2.5" fill="none" />
+            <circle cx="150" cy="120" r="25" fill="none" stroke="#E85D00" stroke-width="2" stroke-dasharray="6 4" />
+            <circle cx="150" cy="120" r="12" fill="#FFA043" opacity="0.4" />
+            <line x1="120" y1="165" x2="180" y2="165" stroke="#C04800" stroke-width="1.5" opacity="0.5" />
+            <line x1="125" y1="180" x2="175" y2="180" stroke="#C04800" stroke-width="1.5" opacity="0.4" />
+            <text x="150" y="280" text-anchor="middle" fill="#8A3400" font-size="14" font-family="Syne" font-weight="600">Stitched Hoodie</text>
+            <text x="150" y="300" text-anchor="middle" fill="#8A3400" font-size="11" font-family="Space Grotesk" opacity="0.5">Cut & sew</text>
+          </svg>
+          <div class="px-2.5 py-2 sm:px-4 sm:py-3">
+            <p class="font-display font-semibold text-xs sm:text-sm">Stitched Hoodie</p>
+            <p class="text-[0.65rem] sm:text-xs text-warmgray/50 mt-0.5">Cut & sew from surplus blankets</p>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="gallery-card rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-md border border-sunset-100/60">
+          <svg viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="340" fill="#FFF0DB" />
+            <rect x="90" y="50" width="120" height="180" rx="10" fill="#2D5016" opacity="0.7" />
+            <rect x="100" y="60" width="100" height="50" rx="4" fill="#4A8C1F" opacity="0.3" />
+            <path d="M105 130 Q150 115 195 130" stroke="#FFA043" stroke-width="2.5" fill="none" />
+            <circle cx="120" cy="160" r="6" fill="#FF7A1A" opacity="0.6" />
+            <circle cx="150" cy="155" r="8" fill="#E85D00" opacity="0.5" />
+            <circle cx="178" cy="162" r="5" fill="#FFC078" opacity="0.7" />
+            <line x1="100" y1="195" x2="200" y2="195" stroke="#FFA043" stroke-width="1.5" opacity="0.4" />
+            <text x="150" y="280" text-anchor="middle" fill="#4A1D00" font-size="14" font-family="Syne" font-weight="600">Rebuilt Vest</text>
+            <text x="150" y="300" text-anchor="middle" fill="#4A1D00" font-size="11" font-family="Space Grotesk" opacity="0.5">Layering piece</text>
+          </svg>
+          <div class="px-2.5 py-2 sm:px-4 sm:py-3">
+            <p class="font-display font-semibold text-xs sm:text-sm">Rebuilt Utility Vest</p>
+            <p class="text-[0.65rem] sm:text-xs text-warmgray/50 mt-0.5">Military-green w/ orange thread</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════════════════ BEFORE & AFTER ════════════════ -->
+    <section class="mb-12 md:mb-28 animate-fade-up stagger-3">
+      <div class="text-center mb-6 md:mb-10">
+        <h2 class="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
+          The <span class="tag">Transformation</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-warmgray/50 mt-1.5 sm:mt-2">Corporate deadstock in. 1-of-1 wearable art out.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 max-w-2xl mx-auto">
+        <!-- Before -->
+        <div class="rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-md border border-warmgray/10">
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="300" fill="#E8E4E0" />
+            <rect x="130" y="30" width="140" height="200" rx="6" fill="#B0AAA4" opacity="0.7" />
+            <path d="M160 30 L200 10 L240 30" fill="#9E9892" opacity="0.6" />
+            <rect x="155" y="80" width="90" height="3" fill="#D1CCC7" />
+            <rect x="155" y="95" width="90" height="3" fill="#D1CCC7" />
+            <rect x="155" y="110" width="70" height="3" fill="#D1CCC7" />
+            <rect x="155" y="140" width="90" height="3" fill="#D1CCC7" />
+            <rect x="155" y="155" width="90" height="3" fill="#D1CCC7" />
+            <text x="200" y="268" text-anchor="middle" fill="#8A8580" font-size="12" font-family="Syne" font-weight="600">GENERIC CORP HOODIE</text>
+            <text x="200" y="286" text-anchor="middle" fill="#8A8580" font-size="10" font-family="Space Grotesk" opacity="0.6">Unsold deadstock, headed for landfill</text>
+          </svg>
+          <div class="px-4 py-3 text-center">
+            <p class="text-[0.65rem] sm:text-xs font-bold uppercase tracking-widest text-warmgray/40">Before</p>
+            <p class="font-display font-semibold text-xs sm:text-sm mt-0.5">Mass-Produced Hoodie</p>
+          </div>
+        </div>
+
+        <!-- After -->
+        <div class="rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-md border border-sunset-200/60 ring-2 ring-sunset-300/30">
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="300" fill="#FFF0DB" />
+            <rect x="130" y="30" width="140" height="200" rx="6" fill="#3D3531" opacity="0.85" />
+            <path d="M160 30 L200 10 L240 30" fill="#3D3531" opacity="0.6" />
+            <!-- Patchwork panels -->
+            <rect x="135" y="60" width="55" height="50" rx="3" fill="#FF7A1A" opacity="0.5" />
+            <rect x="200" y="75" width="65" height="40" rx="3" fill="#E85D00" opacity="0.4" />
+            <rect x="140" y="120" width="40" height="35" rx="3" fill="#FFA043" opacity="0.4" />
+            <!-- Stitching details -->
+            <path d="M155 170 L175 180 L160 195 L180 205" stroke="#FFC078" stroke-width="2" fill="none" stroke-dasharray="4 3" stroke-linecap="round" />
+            <path d="M210 145 L225 155 L215 170 L230 180" stroke="#FF7A1A" stroke-width="2" fill="none" stroke-dasharray="4 3" stroke-linecap="round" />
+            <!-- Raw edge indicator -->
+            <path d="M135 60 L132 58 L135 56 L132 54" stroke="#C04800" stroke-width="1.5" fill="none" opacity="0.6" />
+            <circle cx="255" cy="160" r="4" fill="none" stroke="#FFA043" stroke-width="1.5" />
+            <line x1="259" y1="160" x2="268" y2="155" stroke="#FFA043" stroke-width="1" />
+            <text x="200" y="268" text-anchor="middle" fill="#8A3400" font-size="12" font-family="Syne" font-weight="600">DAVID'S REWORKED HOODIE</text>
+            <text x="200" y="286" text-anchor="middle" fill="#8A3400" font-size="10" font-family="Space Grotesk" opacity="0.6">1-of-1, 14 hours of labor</text>
+          </svg>
+          <div class="px-4 py-3 text-center">
+            <p class="text-[0.65rem] sm:text-xs font-bold uppercase tracking-widest text-sunset-500">After</p>
+            <p class="font-display font-semibold text-xs sm:text-sm mt-0.5">David's 1-of-1 Patchwork Hoodie</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ TECHNIQUES USED ════════════════ -->
+    <section class="mb-12 md:mb-28 animate-fade-up stagger-4">
+      <div class="text-center mb-6 md:mb-10">
+        <h2 class="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
+          Techniques <span class="tag">Used</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-warmgray/50 mt-1.5 sm:mt-2">Every garment is high-end craft, not factory output.</p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+        <div class="bg-white/60 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-sunset-100 text-center shadow-sm">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-sunset-100 flex items-center justify-center mx-auto mb-2.5">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-sunset-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z" /></svg>
+          </div>
+          <p class="font-display font-bold text-sm sm:text-base text-warmgray">14 Hours</p>
+          <p class="text-[0.65rem] sm:text-xs text-warmgray/50 mt-0.5">of dedicated labor</p>
+        </div>
+        <div class="bg-white/60 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-sunset-100 text-center shadow-sm">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-yellow-100 flex items-center justify-center mx-auto mb-2.5">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
+          </div>
+          <p class="font-display font-bold text-sm sm:text-base text-warmgray">Custom Patchwork</p>
+          <p class="text-[0.65rem] sm:text-xs text-warmgray/50 mt-0.5">multi-fabric panels</p>
+        </div>
+        <div class="bg-white/60 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-sunset-100 text-center shadow-sm">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-orange-100 flex items-center justify-center mx-auto mb-2.5">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z" /></svg>
+          </div>
+          <p class="font-display font-bold text-sm sm:text-base text-warmgray">Deconstructed Seams</p>
+          <p class="text-[0.65rem] sm:text-xs text-warmgray/50 mt-0.5">raw-edge finishing</p>
+        </div>
+        <div class="bg-white/60 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-sunset-100 text-center shadow-sm">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-100 flex items-center justify-center mx-auto mb-2.5">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+          </div>
+          <p class="font-display font-bold text-sm sm:text-base text-warmgray">Hand-Embroidered</p>
+          <p class="text-[0.65rem] sm:text-xs text-warmgray/50 mt-0.5">signature thread work</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ IMPACT BREAKDOWN ════════════════ -->
+    <section class="mb-12 md:mb-28 animate-fade-up stagger-4">
+      <div class="text-center mb-6 md:mb-10">
+        <h2 class="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
+          Where Your <span class="tag">Money Goes</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-warmgray/50 mt-1.5 sm:mt-2">100% transparent. Every dollar builds a future.</p>
+      </div>
+
+      <div class="max-w-lg mx-auto space-y-3 sm:space-y-4">
+        <!-- 60% -->
+        <div class="bg-white/60 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-sunset-100 shadow-sm">
+          <div class="flex items-center gap-3 sm:gap-4">
+            <div class="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-sunset-800 flex items-center justify-center shadow-md">
+              <span class="font-display font-extrabold text-white text-base sm:text-lg drop-shadow-sm">60%</span>
+            </div>
+            <div>
+              <p class="font-display font-bold text-sm sm:text-base text-warmgray">David's Post-Release Savings</p>
+              <p class="text-[0.75rem] sm:text-sm text-warmgray/60 leading-snug mt-0.5">Locked into a trust fund so David has a real financial safety net when he re-enters society.</p>
+            </div>
+          </div>
+          <div class="mt-3 h-2.5 rounded-full bg-sunset-100 overflow-hidden">
+            <div class="h-full rounded-full bg-gradient-to-r from-sunset-400 to-sunset-600" style="width: 60%;"></div>
+          </div>
+        </div>
+
+        <!-- 20% -->
+        <div class="bg-white/60 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-sunset-100 shadow-sm">
+          <div class="flex items-center gap-3 sm:gap-4">
+            <div class="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-amber-700 flex items-center justify-center shadow-md">
+              <span class="font-display font-extrabold text-white text-base sm:text-lg drop-shadow-sm">20%</span>
+            </div>
+            <div>
+              <p class="font-display font-bold text-sm sm:text-base text-warmgray">Fair Wages and Materials</p>
+              <p class="text-[0.75rem] sm:text-sm text-warmgray/60 leading-snug mt-0.5">Covers workshop operating costs, fair hourly wages, and high-quality sewing materials.</p>
+            </div>
+          </div>
+          <div class="mt-3 h-2.5 rounded-full bg-yellow-100 overflow-hidden">
+            <div class="h-full rounded-full bg-gradient-to-r from-yellow-400 to-amber-500" style="width: 20%;"></div>
+          </div>
+        </div>
+
+        <!-- 20% -->
+        <div class="bg-white/60 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-sunset-100 shadow-sm">
+          <div class="flex items-center gap-3 sm:gap-4">
+            <div class="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-orange-800 flex items-center justify-center shadow-md">
+              <span class="font-display font-extrabold text-white text-base sm:text-lg drop-shadow-sm">20%</span>
+            </div>
+            <div>
+              <p class="font-display font-bold text-sm sm:text-base text-warmgray">Local Pop-Up Curator</p>
+              <p class="text-[0.75rem] sm:text-sm text-warmgray/60 leading-snug mt-0.5">Supports the community organizers who curate, photograph, and sell each piece at local events.</p>
+            </div>
+          </div>
+          <div class="mt-3 h-2.5 rounded-full bg-orange-100 overflow-hidden">
+            <div class="h-full rounded-full bg-gradient-to-r from-orange-400 to-red-400" style="width: 20%;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ QR / STORY TAG ════════════════ -->
+    <section class="text-center mb-10 md:mb-16 animate-fade-up stagger-4">
+      <div class="flex flex-col items-center bg-warmgray rounded-2xl sm:rounded-3xl px-6 py-6 sm:px-8 sm:py-8 md:px-14 md:py-10 shadow-lg mx-auto max-w-sm md:max-w-none md:inline-flex">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl bg-white flex items-center justify-center mb-3 sm:mb-5 shadow-md">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9 sm:w-11 sm:h-11" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="8" height="8" rx="1.5" stroke="#3D3531" stroke-width="2.2" />
+            <rect x="4.5" y="4.5" width="3" height="3" rx="0.5" fill="#E85D00" />
+            <rect x="14" y="2" width="8" height="8" rx="1.5" stroke="#3D3531" stroke-width="2.2" />
+            <rect x="16.5" y="4.5" width="3" height="3" rx="0.5" fill="#E85D00" />
+            <rect x="2" y="14" width="8" height="8" rx="1.5" stroke="#3D3531" stroke-width="2.2" />
+            <rect x="4.5" y="16.5" width="3" height="3" rx="0.5" fill="#E85D00" />
+            <rect x="14" y="14" width="3.5" height="3.5" rx="0.5" fill="#3D3531" />
+            <rect x="18.5" y="14" width="3.5" height="3.5" rx="0.5" fill="#3D3531" />
+            <rect x="14" y="18.5" width="3.5" height="3.5" rx="0.5" fill="#3D3531" />
+            <rect x="18.5" y="18.5" width="3.5" height="3.5" rx="0.5" fill="#E85D00" />
+          </svg>
+        </div>
+        <p class="text-[0.65rem] sm:text-xs uppercase tracking-[0.2em] text-sunset-400 font-semibold mb-1">Story Tag Scanned</p>
+        <p class="text-cream/70 text-xs sm:text-sm max-w-xs leading-relaxed font-medium">You scanned a tag and found <strong class="text-white">David</strong>. Every garment carries the maker's story.</p>
+      </div>
+    </section>
+
+    <!-- ════════════════ LEARN MORE / INITIATIVE ════════════════ -->
+    <section id="learn-more" class="mb-12 md:mb-20 animate-fade-up stagger-5">
+      <div class="bg-warmgray rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 text-cream shadow-2xl overflow-hidden relative">
+        <div class="absolute top-0 right-0 w-48 h-48 md:w-72 md:h-72 bg-sunset-600 rounded-full blur-[100px] opacity-20 -translate-y-1/2 translate-x-1/3"></div>
+        <div class="relative z-10">
+          <p class="text-[0.65rem] sm:text-xs font-semibold tracking-[0.25em] uppercase text-sunset-400 mb-3 sm:mb-4">About the Initiative</p>
+          <h2 class="font-display text-xl sm:text-2xl md:text-3xl font-bold tracking-tight leading-snug mb-4 sm:mb-6">
+            The Prison Thread Initiative:<br class="hidden sm:block" /> Rebuilding Clothes, Rebuilding Lives
+          </h2>
+
+          <div class="space-y-4 text-[0.85rem] sm:text-sm md:text-base leading-relaxed text-cream/75">
+            <p>
+              We believe that nothing, and no one, is disposable. The Prison Thread Initiative is a closed-loop ecosystem designed to solve two massive problems: the environmental crisis of fast-fashion waste, and the lack of rehabilitative opportunities in our prison system.
+            </p>
+            <p>
+              We partner with major clothing brands to legally divert their unsold, mass-produced deadstock away from landfills. Instead of being shredded, these garments are shipped directly to our secure, warden-approved workshops inside prisons. There, incarcerated individuals undergo rigorous training in tailoring, design, and supply chain management. They take this corporate waste and completely upcycle it into 1-of-1 wearable art.
+            </p>
+            <p>
+              This program is entirely voluntary and focuses on humanization and skill-building. Our artists earn fair wages for their labor, the majority of which is locked into a post-release savings trust to ensure they have a financial safety net when they re-enter society.
+            </p>
+            <p class="text-cream/90 font-medium border-l-2 border-sunset-500 pl-4 sm:pl-5 italic">
+              When you buy a Prison Thread garment and scan its Story Tag, you are not just buying a unique piece of sustainable fashion. You are funding a second chance, destroying the anonymity of the supply chain, and proving that both clothes and people deserve a chance to be rewritten.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ CTA / FOOTER ════════════════ -->
+    <footer class="text-center pb-10 md:pb-14 animate-fade-up stagger-5">
+      <p class="text-[0.65rem] sm:text-xs text-warmgray/30 tracking-wider">
+        &copy; 2026 The Prison Thread Initiative&ensp;&middot;&ensp;Every stitch, a second chance.
+      </p>
+    </footer>
+
+  </div>
+
+</body>
+</html>
